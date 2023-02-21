@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>小鹿线后台管理系统</title>
+    <link rel="stylesheet" href="/stylesheets/common.css"/>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>
+          <img src="/images/pic_logo_shouye.png" alt="">
+        </h1>
+        <div>官网后台管理</div>
+      </header>
+      <form action="/admin/main" method="post">
+        <div class="form-group">
+          <label for="">用户名</label>
+          <input type="text" name="userName">
+        </div>
+        <div class="form-group">
+          <label for="">密码</label>
+          <input type="password" name="userPwd">
+        </div>
+        <input type="submit" value="Login">
+      </form>
+    </div>
+  </body>
+</html>

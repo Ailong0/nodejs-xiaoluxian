@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>小鹿线后台管理系统</title>
+        <link rel="stylesheet" href="/stylesheets/common.css"/>
+        <style>
+            body{
+                background: #1C1C22;
+            }
+            ul{
+                list-style: none;
+                cursor: pointer;
+            }
+            a,span{
+                color: white;
+            }
+            .nav-left h3{
+                padding: 40px;
+            }
+            .nav-left > ul{
+                padding: 0 16px;
+            }
+            .nav-left > ul > li {
+                padding: 20px 0;
+                border-top: 2px solid #37383D;
+            }
+            .nav-left > ul > li :first-child{
+                border-top: none;
+            }
+            .menu{
+                position: relative;
+                margin: 0 20px;
+                line-height: 40px;
+                color: white;
+                border-radius: 24px;
+            }
+            .menu.active{
+                background: #047BFB;
+            }
+            .menu > img:first-child{
+                margin: -2px 18px;
+            }
+            .menu > img:last-child{
+               position: absolute;
+                right: 24px;
+                top: 50%;
+                margin-top:-4px ;
+            }
+            .nav-left > ul > li > ul > li{
+                margin-top: 20px;
+            }
+            .out{
+                position: fixed;
+                left: 50%;
+                bottom: 40px;
+                transform: translateX(-50%);
+                width: 80%;
+                line-height: 40px;
+                text-align: center;
+                color: white;
+                background-color:#047bfb ;
+                border-radius: 24px;
+                cursor: pointer;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="nav-left">
+            <h3>
+                <img src="/images/pic_logo_shouye.png" alt="">
+            </h3>
+            <ul>
+                <li>
+                    <div class="menu active">
+                        <img src="/images/icon_shouye.png" alt="">
+                        <span>首页</span>
+                        <img src="/images/icon_you_s.png" class="down" alt="">
+                    </div>
+                    <ul>
+                        <li class="menu">
+                            <img src="/images/icon_banner.png" alt="">
+                            <a href="/bannerList" target="right">banner图</a>
+                        </li>
+
+                        <li class="menu">
+                            <img src="/images/icon_class.png" alt="">
+                            <a href="#">开班计划</a>
+                        </li>
+
+                        <li class="menu">
+                            <img src="/images/icon_kecheng.png" alt="">
+                            <a href="#">课程体系</a>
+                        </li>
+
+                        <li class="menu">
+                            <img src="/images/icon_qiye.png" alt="">
+                            <a href="#">企业级项目</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li>
+                    <div class="menu ">
+                        <img src="/images/icon_jiuye.png" alt="">
+                        <span>成功就业</span>
+                        <img src="/images/icon_you_s.png" class="down" alt="">
+<!--                        <img src="/images/icon_you_s.png" alt="">-->
+                    </div>
+                </li>
+
+                <li>
+                    <div class="menu ">
+                        <img src="/images/icon_women.png" alt="">
+                        <span>关于我们</span>
+                        <img src="/images/icon_you_s.png" class="down" alt="">
+                    </div>
+                </li>
+            </ul>
+            <div class="out">退出登录</div>
+        </div>
+        <script src="/javascripts/jquery.js"></script>
+        <script>
+            $(function (){
+               $('.nav-left > ul > li').click(function (){
+                   //添加一级按钮样式
+                   $(this).siblings().find('div.menu').removeClass('active');
+                   $(this).find('div.menu').addClass('active');
+                   //更换箭头
+                   $(this).siblings().find('.down').attr('src','/images/icon_you_s.png');
+                   $(this).find('.down').attr('src','/images/icon_down.png');
+                   //展开收起
+                   $(this).siblings().find('ul').slideUp(200);
+                   $(this).find('ul').slideDown(200);
+               })
+            })
+        </script>
+    </body>
+</html>

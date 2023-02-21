@@ -1,0 +1,16 @@
+*{margin: 0;padding: 0}
+body {
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+ul{
+    list-style: none;
+}
+a {
+    color: #00B7FF;
+    text-decoration: none;
+}
+input{
+    border: 0px;
+    background-color: none;
+    outline: none;
+}
