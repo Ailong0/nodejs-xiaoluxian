@@ -14,11 +14,20 @@ router.post('/', function(req, res, next) {
                 throw err;
             }else{
                 db.query('select * from banner',function (err,data){
-                    if(err){
-                        throw err;
-                    }else{
-                        res.render('bannerList',{bannerList:data});
-                    }
+                var pager = {};
+                pager.maxNum = data.length;
+                pager.Current =  1;
+                pager.pageSize = 5;
+                pager.pageCount = parseInt(Math.ceil(pager.maxNum/pager.pageSize));
+                var dataList = data.slice( (pager.Current-1)*pager.pageSize,(pager.Current-1) * pager.pageSize + pager.pageSize);
+                if(err){
+                    throw err;
+                }else{
+                    res.render('bannerList',{
+                        bannerList:dataList,
+                        pager:pager
+                    });
+                }
                 })
             }
         })

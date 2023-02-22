@@ -23,10 +23,17 @@
                 border-radius: 24px;
 
             }
+            .select form{
+                display: flex;
+            }
+            .select form > div{
+                margin: 0;
+            }
             .select select{
                 padding: 0 20px;
                 width: 350px;
                 height: 40px;
+
                 color: #999999;
                 background: #fff;
                 border-radius: 12px;
@@ -38,14 +45,15 @@
                 display: flex;
                 width: 560px;
                 height: 40px;
+                margin-left: 15px;
                 border-radius: 12px;
                 overflow: hidden;
             }
             .select .search input{
-
+                padding: 0 10px;
                 flex: 1;
             }
-            .select .search div{
+            .select .search .serach-btn{
                 display: flex;
                 justify-content: center;
                 align-items: center;
@@ -53,11 +61,11 @@
                 height: 40px;
                 background-color: #067bfb;
             }
-            .select .search div img{
-                width: 30px;
-                height: 30px;
+            .select .search  .serach-btn img{
+                width: 25px;
+                height: 25px;
             }
-            .select button{
+            .select .add-btn{
                 width: 70px;
                 height: 40px;
                 line-height: 40px;
@@ -123,7 +131,7 @@
             .dialog-footer{
                 text-align: right;
             }
-            .dialog-footer button,.dialog-footer span{
+            .dialog-footer button,.dialog-footer span ,.dialog-footer input[type='submit']{
                 display: inline-block;
                 padding: 6px 10px;
                 color: white;
@@ -132,6 +140,9 @@
                 border-radius: 7px;
             }
             .isDialog{
+                display: none;
+            }
+            .isDelect{
                 display: none;
             }
             .page{
@@ -149,20 +160,21 @@
         <div class="container">
             <div class="main">
                 <div class="select">
-                    <select name="" id="">
-                        <option value="请选择">请选择</option>
-                        <option value="请选择">请选择</option>
-                        <option value="请选择">请选择</option>
-                        <option value="请选择">请选择</option>
-                        <option value="请选择">请选择</option>
-                    </select>
-                    <div class="search">
-                        <input type="text">
-                        <div>
-                            <img src="/images/icon_search.png" alt="">
+                    <form action="/like" method="get" id="myform">
+                        <select onchange="submitForm()"  name="selectVal">
+                            <% bannerList.forEach(function (item){ %>
+                                <option value="<%=item.name%>"><%=item.name%></option>
+
+                            <% }) %>
+                        </select>
+                        <div class="search">
+                            <input type="text" name="like">
+                            <button class="serach-btn">
+                                <img src="/images/icon_search.png" alt="">
+                            </button>
                         </div>
-                    </div>
-                    <button id="addBtn">添加</button>
+                    </form>
+                    <button id="addBtn" class="add-btn">添加</button>
                 </div>
                 <div class="content">
                     <table class="table">
@@ -179,8 +191,8 @@
                             <td><%=item.name%></td>
                             <td><%=item.imgurl%></td>
                             <td>
-                                <img src="/images/btn_chakan.png" class="edit" alt="">
-                                <img src="/images/btn_shanchu.png" alt="del">
+                                <img src="/images/btn_chakan.png" class="edit update" alt="" data-id="<%=item.id%>" data-name="<%=item.name%>" data-imgurl="<%=item.imgurl%>">
+                                <img src="/images/btn_shanchu.png" alt="del" class="delect-item" data-id="<%=item.id%>">
                             </td>
                         </tr>
                         <% }) %>
@@ -188,27 +200,54 @@
                     </table>
                     <div class="page">
                         <ul class="pagination">
-                            <% var nextNum=10; %>
+                            <% var prevNum=10;var nextNum=10; %>
                             <li class="disabled"><a href="javascript:;">共<%= pager.maxNum %>条</a></li>
                             <li class="disabled"><a href="javascript:;">总<%= pager.pageCount%>页</a></li>
-                            <li class="disabled"><a href="javascript:;">首页</a></li>
 
+                            <%if(pager.maxNum==0){%>
+                                <li class="disabled"><a href="javascript:;">首页</a></li>
+                            <%}else{%>
+                                <li ><a href="/bannerList?page=1">首页</a></li>
+                            <%}%>
+
+                            <%if(pager.Current==1){%>
+                                <li class="disabled"><a href="javascript:;">上一页</a></li>
+                            <%}else{%>
+                                <li ><a href="/bannerList?page=<%=  parseInt(pager.Current) -1%>">上一页</a></li>
+                            <%}%>
+
+
+                            <%for(var i=prevNum;i>0;i--){ %>
+                                <%if(parseInt(pager.Current)-i>0){ %>
+                                    <li ><a href="/bannerList?page=<%= pager.Current%>"><%= parseInt(pager.Current)-i%></a></li>
+                                <%}%>
+                            <%}%>
                             <li class="active"><a href="/bannerList?page=<%= pager.Current%>"><%= pager.Current%></a></li>
                             <% for(var i=1;i<=nextNum;i++){  %>
                                 <% if(parseInt(pager.Current)+i <= pager.pageCount){%>
                                 <li ><a href="/bannerList?page=<%= parseInt(pager.Current)+i%>"><%= parseInt(pager.Current)+i%></a></li>
                             <% }} %>
 
+                            <%if(pager.Current==pager.pageCount){%>
+                                <li class="disabled"><a href="javascript:;">下一页</a></li>
+                            <%}else{%>
+                                <li ><a href="/bannerList?page=<%=  parseInt(pager.Current) +1%>">下一页</a></li>
+                            <%}%>
 
 
-                            <li class="disabled"><a href="javascript:;">下一页</a></li>
-                            <li class="disabled"><a href="javascript:;">尾页</a></li>
+                            <%if(pager.maxNum==0){%>
+                                <li class="disabled"><a href="javascript:;">尾页</a></li>
+                            <%}else{%>
+                                <li ><a href="/bannerList?page=<%= pager.pageCount%>">尾页</a></li>
+                            <%}%>
+
                         </ul>
                     </div>
                 </div>
             </div>
 
         </div>
+<!--        添加操作-->
     <div class="dialog isDialog"></div>
     <div class="dialog-wrap isDialog">
         <div class="dialog-header">
@@ -235,14 +274,90 @@
             </div>
         </form>
     </div>
+<!--        删除操作-->
+        <div class="dialog isDelect"></div>
+        <div class="dialog-wrap isDelect">
+            <div class="dialog-header">
+                <h3>确定是否删除?</h3>
+                <div class="close">
+                    <img src="/images/icon_guanbi.png" alt="">
+                </div>
+            </div>
+
+                <div class="dialog-footer">
+                    <span class="cancel">取消</span>
+                    <button class="determine determineDel">确定</button>
+                </div>
+        </div>
+<!--        修改操作-->
+
+
+
     <script src="/javascripts/jquery.js"></script>
     <script>
+        function submitForm(){
+            var form = document.getElementById('myform');
+            form.submit();
+        }
         $(function (){
+            var id = '';
+            var updateHtml='';
             $('#addBtn').click(function (){
                 $('.isDialog').show();
             })
             $('.close,.cancel ').click(function (){
                 $('.isDialog').hide();
+                $('.isDelect').hide();
+            })
+            $('.delect-item').click(function (){
+                id=$(this).data('id');
+                $('.isDelect').show();
+            })
+            $('.determineDel').click(function (){
+                window.location.href = `/del?id=${id}`;
+            })
+            $('.update').click(function (){
+                var updateId = $(this).data('id');
+                var updateName = $(this).data('name');
+                var updateImgUrl = $(this).data('imgurl');
+                updateHtml=`
+    <div class="dialog isUpdate"></div>
+    <div class="dialog-wrap isUpdate">
+        <div class="dialog-header">
+            <h3>修改操作</h3>
+            <div class="close">
+                <img src="/images/icon_guanbi.png" alt="">
+            </div>
+        </div>
+
+        <form action="/update" enctype="multipart/form-data" method="post">
+            <div>
+                <p>ID</p>
+                <p>
+                    <input type="text" class="form-control" name="upid" value='${updateId}'/>
+                </p>
+            </div>
+            <div>
+                <p>图标名称</p>
+                <p>
+                    <input type="text" class="form-control" name="imgName" value='${updateName}'/>
+                </p>
+            </div>
+            <div>
+                <p>图片路径</p>
+                <input type="file" name="pic" class="upload-input" id="uploadInput" />
+            </div>
+            <div class="dialog-footer">
+                <span class="cancel">取消</span>
+                <input type="submit" value="确定" class="determine">
+
+            </div>
+        </form>
+    </div>`
+                $('body').append(updateHtml);
+            })
+            $('body').on('click','.close,.cancel',function (){
+                $('.isUpdate').hide();
             })
         })
     </script>
