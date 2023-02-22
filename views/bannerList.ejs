@@ -188,13 +188,19 @@
                     </table>
                     <div class="page">
                         <ul class="pagination">
+                            <% var nextNum=10; %>
                             <li class="disabled"><a href="javascript:;">共<%= pager.maxNum %>条</a></li>
                             <li class="disabled"><a href="javascript:;">总<%= pager.pageCount%>页</a></li>
                             <li class="disabled"><a href="javascript:;">首页</a></li>
-                            <li><a href="javascript:;">1</a></li>
-                            <li><a href="javascript:;">2</a></li>
-                            <li><a href="javascript:;">3</a></li>
-                            <li><a href="javascript:;">4</a></li>
+
+                            <li class="active"><a href="/bannerList?page=<%= pager.Current%>"><%= pager.Current%></a></li>
+                            <% for(var i=1;i<=nextNum;i++){  %>
+                                <% if(parseInt(pager.Current)+i <= pager.pageCount){%>
+                                <li ><a href="/bannerList?page=<%= parseInt(pager.Current)+i%>"><%= parseInt(pager.Current)+i%></a></li>
+                            <% }} %>
+
+
+
                             <li class="disabled"><a href="javascript:;">下一页</a></li>
                             <li class="disabled"><a href="javascript:;">尾页</a></li>
                         </ul>
